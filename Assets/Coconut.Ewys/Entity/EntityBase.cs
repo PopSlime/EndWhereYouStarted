@@ -49,6 +49,7 @@ namespace Coconut.Ewys.Entity {
 				var step = MOVE_SPEED * Time.deltaTime;
 				if (step >= mag) {
 					Position = _moveDest.Value;
+					transform.position = (Vector3Int)Position;
 					_moveDest = null;
 					_onMoveDone();
 				}
