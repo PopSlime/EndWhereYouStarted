@@ -1,6 +1,7 @@
 ﻿using Coconut.Ewys.Entity;
 using Cryville.Common.Unity;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -14,20 +15,24 @@ namespace Coconut.Ewys {
 			_path = path;
 			_root = root;
 		}
-		public void Read() {
+		public void Read(List<Vector2Int> outTiles, Dictionary<Vector2Int, EntityBase> outEntities) {
 			foreach (Transform child in _root) GameObject.Destroy(child.gameObject);
 			var level = JsonConvert.DeserializeObject<LevelData>(Resources.Load<TextAsset>("Levels/" + _path).text);
 			foreach (var tile in level.tiles) {
 				var go = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Tile"));
 				go.transform.SetParent(_root);
-				go.transform.position = (Vector3Int)tile.ToVector2Int();
+				var pos = tile.ToVector2Int();
+				go.transform.position = (Vector3Int)pos;
+				outTiles.Add(pos);
 			}
 			foreach (var entity in level.entities) {
 				var go = GameObject.Instantiate(Resources.Load<GameObject>(
 					string.Format(CultureInfo.InvariantCulture, "Prefabs/Entities/{0:D}", entity.type)
 				));
 				go.transform.SetParent(_root);
-				go.GetComponent<EntityBase>().FromData(entity);
+				var comp = go.GetComponent<EntityBase>();
+				comp.FromData(entity);
+				outEntities.Add(comp.Position, comp);
 			}
 		}
 		public void Write() {
