@@ -15,7 +15,7 @@ namespace Coconut.Ewys {
 		}
 		public void Read() {
 			foreach (Transform child in _root) GameObject.Destroy(child.gameObject);
-			var level = JsonConvert.DeserializeObject<LevelData>(Resources.Load<TextAsset>(_path).text);
+			var level = JsonConvert.DeserializeObject<LevelData>(Resources.Load<TextAsset>("Levels/" + _path).text);
 			foreach (var tile in level.tiles) {
 				var go = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Tile"));
 				go.transform.SetParent(_root);

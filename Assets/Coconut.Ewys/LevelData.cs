@@ -72,6 +72,8 @@ namespace Coconut.Ewys {
 			return _currentType switch {
 				0 => new PlayerData(),
 				4 => new ObstacleData(),
+				8 => new StarData(),
+				9 => new TriggerData(),
 				_ => throw new ArgumentException("Invalid entity type"),
 			};
 		}
