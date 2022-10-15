@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 namespace Coconut.Ewys {
 	public class LevelData {
-		public float[] size;
-		public List<EntityData> entities;
+		public int[][] tiles;
+		public List<EntityData> entities = new();
 	}
 	[JsonConverter(typeof(EntityDataConverter))]
 	public abstract class EntityData {
