@@ -1,6 +1,7 @@
 ﻿using Coconut.Ewys.Entity;
 using Cryville.Common.Unity;
 using Newtonsoft.Json;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -22,7 +23,9 @@ namespace Coconut.Ewys {
 				go.transform.position = (Vector3Int)tile.ToVector2Int();
 			}
 			foreach (var entity in level.entities) {
-				var go = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Entities/" + entity.type));
+				var go = GameObject.Instantiate(Resources.Load<GameObject>(
+					string.Format(CultureInfo.InvariantCulture, "Prefabs/Entities/{0:D}" + entity.type)
+				));
 				go.transform.SetParent(_root);
 				go.GetComponent<EntityBase>().FromData(entity);
 			}
