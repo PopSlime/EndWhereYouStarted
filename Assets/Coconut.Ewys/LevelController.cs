@@ -14,7 +14,7 @@ namespace Coconut.Ewys {
 		Dictionary<Vector2Int, EntityBase> _entities = new();
 		List<Player> _players = new();
 		int _currentPlayer = 0;
-		List<AtomicOperation> _ops = new();
+		List<AtomicOperation> _ops = new() { new DummyAtomic() };
 		int _currentOp = 1;
 
 		void Awake() {
