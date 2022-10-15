@@ -33,6 +33,7 @@ namespace Coconut.Ewys.Entity {
 		FlagAtomicDelegate _onMoveDone;
 		Vector2Int? _moveDest;
 		public bool TryMove(Vector2Int delta, FlagAtomicDelegate d) {
+			if (_moveDest != null) return false;
 			Vector2Int dest = Position + delta;
 			if (IsBlocked(dest)) {
 				d(); return true;

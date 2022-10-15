@@ -7,11 +7,13 @@ namespace Coconut.Ewys {
 		public bool Working { get; private set; }
 		public void Do() {
 			if (Working) throw new System.InvalidOperationException("Task working");
-			if (DoImpl(() => Working = false)) Working = true;
+			Working = true;
+			if (!DoImpl(() => Working = false)) Working = false;
 		}
 		public void Undo() {
 			if (Working) throw new System.InvalidOperationException("Task working");
-			if (UndoImpl(() => Working = false)) Working = true;
+			Working = true;
+			if (!UndoImpl(() => Working = false)) Working = false;
 		}
 		protected abstract bool DoImpl(FlagAtomicDelegate d);
 		protected abstract bool UndoImpl(FlagAtomicDelegate d);
