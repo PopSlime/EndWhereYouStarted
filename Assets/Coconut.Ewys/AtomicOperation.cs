@@ -16,6 +16,11 @@ namespace Coconut.Ewys {
 		protected abstract bool DoImpl(FlagAtomicDelegate d);
 		protected abstract bool UndoImpl(FlagAtomicDelegate d);
 	}
+	public class DummyAtomic : AtomicOperation {
+		protected override bool DoImpl(FlagAtomicDelegate d) { return true; }
+
+		protected override bool UndoImpl(FlagAtomicDelegate d) { return true; }
+	}
 	public abstract class PlayerAtomic : AtomicOperation {
 		protected Player Player { get; private set; }
 		protected PlayerAtomic(Player player) {

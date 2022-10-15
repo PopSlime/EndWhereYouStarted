@@ -12,12 +12,31 @@ namespace Coconut.Ewys {
 
 		List<Vector2Int> _tiles = new();
 		Dictionary<Vector2Int, EntityBase> _entities = new();
+		List<Player> _players = new();
+		int _currentPlayer = 0;
+		List<AtomicOperation> _ops = new();
+		int _currentOp = 1;
 
 		void Awake() {
 			Instance = this;
 			_index ??= JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Levels/Index").text);
 			new LevelIO(_index[CurrentLevel], transform).Read(_tiles, _entities);
-			(_entities[Vector2Int.zero] as Player).TryMove(Vector2Int.down, () => { });
+			foreach (var i in _entities) if (i.Value is Player p) _players.Add(p);
+		}
+
+		void Update() {
+			if (Input.GetKeyDown(KeyCode.Tab)) { _currentPlayer++; _currentPlayer %= _players.Count; }
+			if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow   )) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.up   ));
+			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.down ));
+			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.left ));
+			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.right));
+			if (_currentOp < _ops.Count) {
+				var op = _ops[_currentOp - 1];
+				if (!op.Working) {
+					_ops[_currentOp].Do();
+					_currentOp++;
+				}
+			}
 		}
 
 		public static bool IsBlocked(Vector2Int pos) => Instance.IsBlockedImpl(pos);
