@@ -15,7 +15,7 @@ namespace Coconut.Ewys {
 		public abstract int type { get; }
 #pragma warning restore IDE1006
 		public int id;
-		public float[] pos;
+		public int[] pos;
 		public Side side = Side.Both;
 		/// <summary>
 		/// The default state of the entity.
