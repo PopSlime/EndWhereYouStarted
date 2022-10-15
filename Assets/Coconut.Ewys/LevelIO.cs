@@ -24,7 +24,7 @@ namespace Coconut.Ewys {
 			}
 			foreach (var entity in level.entities) {
 				var go = GameObject.Instantiate(Resources.Load<GameObject>(
-					string.Format(CultureInfo.InvariantCulture, "Prefabs/Entities/{0:D}" + entity.type)
+					string.Format(CultureInfo.InvariantCulture, "Prefabs/Entities/{0:D}", entity.type)
 				));
 				go.transform.SetParent(_root);
 				go.GetComponent<EntityBase>().FromData(entity);
