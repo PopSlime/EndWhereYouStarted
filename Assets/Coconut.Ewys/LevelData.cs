@@ -11,6 +11,7 @@ namespace Coconut.Ewys {
 	}
 	[JsonConverter(typeof(EntityDataConverter))]
 	public abstract class EntityData {
+		//why?
 #pragma warning disable IDE1006
 		public abstract int type { get; }
 #pragma warning restore IDE1006
