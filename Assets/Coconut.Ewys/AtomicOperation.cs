@@ -1,4 +1,5 @@
 ﻿using Coconut.Ewys.Entity;
+using System;
 using UnityEngine;
 
 namespace Coconut.Ewys {
@@ -6,12 +7,12 @@ namespace Coconut.Ewys {
 	public abstract class AtomicOperation {
 		public bool Working { get; private set; }
 		public void Do() {
-			if (Working) throw new System.InvalidOperationException("Task working");
+			if (Working) throw new InvalidOperationException("Task working");
 			Working = true;
 			if (!DoImpl(() => Working = false)) Working = false;
 		}
 		public void Undo() {
-			if (Working) throw new System.InvalidOperationException("Task working");
+			if (Working) throw new InvalidOperationException("Task working");
 			Working = true;
 			if (!UndoImpl(() => Working = false)) Working = false;
 		}
@@ -41,6 +42,17 @@ namespace Coconut.Ewys {
 
 		protected override bool UndoImpl(FlagAtomicDelegate d) {
 			return Player.TryMove(-_delta, d);
+		}
+	}
+	public class LunarPhaseAtomic : AtomicOperation {
+		protected override bool DoImpl(FlagAtomicDelegate d) {
+			d();
+			return true;
+		}
+
+		protected override bool UndoImpl(FlagAtomicDelegate d) {
+			d();
+			return true;
 		}
 	}
 }

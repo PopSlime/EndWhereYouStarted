@@ -4,17 +4,27 @@ using UnityEngine;
 using static Coconut.Ewys.LevelController;
 
 namespace Coconut.Ewys.Entity {
+	public class PositionUpdateEventArgs : EventArgs {
+		public EntityBase Entity { get; set; }
+		public Vector2Int From { get; set; }
+		public Vector2Int To { get; set; }
+		public PositionUpdateEventArgs(EntityBase entity, Vector2Int from, Vector2Int to) {
+			Entity = entity;
+			From = from;
+			To = to;
+		}
+	}
 	public abstract class EntityBase : MonoBehaviour {
 		Side _side;
 		Vector2Int m_position;
 		public Vector2Int Position {
 			get => m_position;
 			set {
+				PositionUpdate?.Invoke(this, new PositionUpdateEventArgs(this, m_position, value));
 				m_position = value;
-				PositionUpdate?.Invoke(this, this);
 			}
 		}
-		public event EventHandler<EntityBase> PositionUpdate;
+		public event EventHandler<PositionUpdateEventArgs> PositionUpdate;
 		public void FromData(EntityData data) {
 			transform.position = (Vector3Int)data.pos.ToVector2Int();
 			Position = data.pos.ToVector2Int();
@@ -32,10 +42,10 @@ namespace Coconut.Ewys.Entity {
 		const float MOVE_SPEED = 2f;
 		FlagAtomicDelegate _onMoveDone;
 		Vector2Int? _moveDest;
-		public bool TryMove(Vector2Int delta, FlagAtomicDelegate d) {
+		public bool TryMove(Vector2Int delta, FlagAtomicDelegate d, bool teleport = false) {
 			if (_moveDest != null) return false;
 			Vector2Int dest = Position + delta;
-			if (IsBlocked(dest)) {
+			if (IsBlocked(dest, teleport ? null : delta)) {
 				d(); return true;
 			}
 			_onMoveDone = d;

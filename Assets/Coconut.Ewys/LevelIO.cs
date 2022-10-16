@@ -11,8 +11,7 @@ using UnityEngine;
 namespace Coconut.Ewys {
 	public partial class LevelController {
 		LevelData _level;
-		readonly List<Vector2Int> _tiles = new();
-		readonly Dictionary<Vector2Int, EntityBase> _entities = new();
+		readonly Dictionary<Vector2Int, List<EntityBase>> _tiles = new();
 		readonly List<Player> _players = new();
 		public void Read(string path) {
 			if (_level != null) throw new InvalidOperationException("Level already loaded.");
@@ -23,7 +22,7 @@ namespace Coconut.Ewys {
 				go.transform.SetParent(transform);
 				var pos = tile.ToVector2Int();
 				go.transform.position = (Vector3Int)pos;
-				_tiles.Add(pos);
+				_tiles.Add(pos, new());
 			}
 			foreach (var entity in _level.entities) {
 				var go = GameObject.Instantiate(Resources.Load<GameObject>(
@@ -32,10 +31,12 @@ namespace Coconut.Ewys {
 				go.transform.SetParent(transform);
 				var comp = go.GetComponent<EntityBase>();
 				comp.FromData(entity);
-				_entities.Add(comp.Position, comp);
+				comp.PositionUpdate += OnEntityPositionUpdate;
+				_tiles[comp.Position].Add(comp);
 				if (comp is Player p) _players.Add(p);
 			}
 		}
+
 		public void Write(string path) {
 #if !UNITY_EDITOR_WIN
 			throw new InvalidOperationException("Writing level is only supported in the editor.");
