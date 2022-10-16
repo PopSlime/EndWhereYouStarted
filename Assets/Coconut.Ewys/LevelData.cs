@@ -33,6 +33,9 @@ namespace Coconut.Ewys {
 	public class PlayerData : EntityData {
 		public override int type => 0;
 	}
+	public class WeightData : EntityData {
+		override public int type => 1;
+	}
 	/// <summary>
 	/// Represents the data of an obstacle.
 	/// </summary>
@@ -40,9 +43,9 @@ namespace Coconut.Ewys {
 		public override int type => 4;
 	}
 	/// <summary>
-	/// Represents the data of a star that the player needs to collect.
+	/// Represents the data of a treasure that the player needs to collect.
 	/// </summary>
-	public class StarData : EntityData {
+	public class TreasureData : EntityData {
 		public override int type => 8;
 	}
 	/// <summary>
@@ -73,7 +76,7 @@ namespace Coconut.Ewys {
 			return _currentType switch {
 				0 => new PlayerData(),
 				4 => new ObstacleData(),
-				8 => new StarData(),
+				8 => new TreasureData(),
 				9 => new TriggerData(),
 				_ => throw new ArgumentException("Invalid entity type"),
 			};
