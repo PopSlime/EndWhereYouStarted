@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace Coconut.Ewys {
 	public class LevelData {
+		public int steps;
 		public List<int[]> tiles = new();
 		public List<EntityData> entities = new();
 	}

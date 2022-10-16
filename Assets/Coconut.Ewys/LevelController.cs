@@ -4,15 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Coconut.Ewys {
-	public class LevelController : MonoBehaviour {
+	public partial class LevelController : MonoBehaviour {
 		public static LevelController Instance;
 
 		static List<string> _index;
 		public static int CurrentLevel;
 
-		List<Vector2Int> _tiles = new();
-		Dictionary<Vector2Int, EntityBase> _entities = new();
-		List<Player> _players = new();
 		int _currentPlayer = 0;
 		List<AtomicOperation> _ops = new() { new DummyAtomic() };
 		int _currentOp = 1;
@@ -20,8 +17,7 @@ namespace Coconut.Ewys {
 		void Awake() {
 			Instance = this;
 			_index ??= JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Levels/Index").text);
-			new LevelIO(_index[CurrentLevel], transform).Read(_tiles, _entities);
-			foreach (var i in _entities) if (i.Value is Player p) _players.Add(p);
+			Read(_index[CurrentLevel]);
 		}
 
 		void Update() {
