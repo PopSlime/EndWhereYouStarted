@@ -42,7 +42,7 @@ namespace Coconut.Ewys {
 				var op = _ops[_currentOp - 1];
 				if (!op.Working) {
 					if (_currentOp > _level.steps) {
-						var atom = new LunarPhaseAtomic();
+						var atom = new LunarPhaseAtomic(this);
 						atom.Do();
 						_ops.Insert(_currentOp--, atom);
 						_lunarPhase = true;

@@ -46,14 +46,16 @@ namespace Coconut.Ewys {
 		}
 	}
 	public class LunarPhaseAtomic : AtomicOperation {
+		readonly LevelController _controller;
+		public LunarPhaseAtomic(LevelController controller) {
+			_controller = controller;
+		}
+
 		protected override bool DoImpl(FlagAtomicDelegate d) {
-			d();
+			d(); // TODO
 			return true;
 		}
 
-		protected override bool UndoImpl(FlagAtomicDelegate d) {
-			d();
-			return true;
-		}
+		protected override bool UndoImpl(FlagAtomicDelegate d) => throw new NotSupportedException("Cannot undo lunar phase.");
 	}
 }
