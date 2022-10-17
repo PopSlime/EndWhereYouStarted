@@ -65,7 +65,7 @@ namespace Coconut.Ewys {
 			if (_tiles.TryGetValue(pos, out var entities)) {
 				foreach (var entity in entities) {
 					if (entity is Obstacle) return true;
-					// TODO Movable objects
+					if (entity is Weight) return delta == null || !entity.TryMove(delta.Value, null, false);
 				}
 			}
 			return false;

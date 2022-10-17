@@ -62,7 +62,7 @@ namespace Coconut.Ewys.Entity {
 					Position = _moveDest.Value;
 					transform.position = (Vector3Int)Position;
 					_moveDest = null;
-					_onMoveDone();
+					_onMoveDone?.Invoke();
 				}
 				else {
 					transform.position += delta.normalized * step;

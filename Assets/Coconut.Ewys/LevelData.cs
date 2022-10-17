@@ -75,6 +75,7 @@ namespace Coconut.Ewys {
 		public override EntityData Create(Type objectType) {
 			return _currentType switch {
 				0 => new PlayerData(),
+				1 => new WeightData(),
 				4 => new ObstacleData(),
 				8 => new TreasureData(),
 				9 => new TriggerData(),
