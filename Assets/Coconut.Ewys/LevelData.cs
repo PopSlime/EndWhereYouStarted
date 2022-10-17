@@ -58,9 +58,20 @@ namespace Coconut.Ewys {
 		/// </summary>
 		public int target;
 		/// <summary>
-		/// The target value.
+		/// The target flag(s).
 		/// </summary>
-		public int value;
+		public int flag;
+		/// <summary>
+		/// Whether to toggle off the target flag(s).
+		/// </summary>
+		public bool inverse;
+		/// <summary>
+		/// The duration before it toggles off after stepped off. Special values:
+		/// <list type="table">
+		/// <item><term>-1</term><description>Does not toggle the flag(s) when stepped off.</description></item>
+		/// <item><term>-2</term><description>Does not toggle off once stepped on.</description></item>
+		/// </list>
+		/// </summary>
 		public int duration = 0;
 	}
 	public class EntityDataConverter : CustomCreationConverter<EntityData> {

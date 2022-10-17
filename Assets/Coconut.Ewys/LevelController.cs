@@ -60,6 +60,26 @@ namespace Coconut.Ewys {
 		void OnEntityPositionUpdate(object sender, PositionUpdateEventArgs e) {
 			_tiles[e.From].Remove(e.Entity);
 			_tiles[e.To].Add(e.Entity);
+			if (e.Entity is Weight w) {
+				if (_tiles.TryGetValue(e.From, out var entities1)) {
+					foreach (var entity in entities1) {
+						// TODO step off trigger
+					}
+				}
+				if (_tiles.TryGetValue(e.To, out var entities2)) {
+					foreach (var entity in entities2) {
+						// TODO teleport
+						// TODO step on trigger
+					}
+				}
+			}
+			if (e.Entity is Player p) {
+				if (_tiles.TryGetValue(e.To, out var entities)) {
+					foreach (var entity in entities) {
+						// TODO pick up treasure
+					}
+				}
+			}
 		}
 
 		public static bool IsBlocked(Vector2Int pos, Vector2Int? delta = null) => Instance.IsBlockedImpl(pos, delta);
