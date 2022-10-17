@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Coconut.Ewys {
 	public partial class LevelController : MonoBehaviour {
@@ -31,6 +32,8 @@ namespace Coconut.Ewys {
 				var op = _ops[_currentOp + 1];
 				if (!op.Working) {
 					if (_currentOp <= 0) {
+						CurrentLevel++;
+						SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 						// TODO dest judge
 					}
 					else {
