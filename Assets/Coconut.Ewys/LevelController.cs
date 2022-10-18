@@ -13,6 +13,7 @@ namespace Coconut.Ewys {
 
 		int _currentPlayer = 0;
 		readonly List<AtomicOperation> _ops = new() { new DummyAtomic() };
+		readonly List<AtomicOperation> _bops = new();
 		int _currentOp = 1;
 		bool _lunarPhase;
 
@@ -28,6 +29,8 @@ namespace Coconut.Ewys {
 			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.down ));
 			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.left ));
 			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.right));
+			while (_bops.Count > 0 && !_bops[0].Working) _bops.RemoveAt(0);
+			if (_bops.Count > 0) return;
 			if (_lunarPhase) {
 				var op = _ops[_currentOp + 1];
 				if (!op.Working) {
@@ -77,6 +80,11 @@ namespace Coconut.Ewys {
 					}
 				}
 			}
+
+		public static void PushBlockingAtom(AtomicOperation atom) => Instance.PushBlockingAtomImpl(atom);
+		public void PushBlockingAtomImpl(AtomicOperation atom) {
+			atom.Do();
+			_bops.Add(atom);
 		}
 
 		public static bool IsBlocked(Vector2Int pos, Vector2Int? delta = null) => Instance.IsBlockedImpl(pos, delta);

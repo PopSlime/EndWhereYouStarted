@@ -7,7 +7,6 @@ namespace Coconut.Ewys {
 		public void Do() {
 			if (Working) throw new InvalidOperationException("Task working");
 			Working = true;
-
 			if (!DoImpl(() => Working = false)) Working = false;
 		}
 		public void Undo() {
