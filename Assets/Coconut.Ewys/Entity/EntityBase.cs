@@ -1,5 +1,6 @@
 ﻿using Cryville.Common.Unity;
 using System;
+using System.Collections;
 using UnityEngine;
 using static Coconut.Ewys.LevelController;
 
@@ -40,34 +41,27 @@ namespace Coconut.Ewys.Entity {
 		public abstract EntityData ToDataImpl();
 
 		const float MOVE_SPEED = 2f;
-		FlagAtomicDelegate _onMoveDone;
-		Vector2Int? _moveDest;
 		public bool TryMove(Vector2Int delta, FlagAtomicDelegate d, bool teleport = false) {
-			if (_moveDest != null) return false;
 			Vector2Int dest = Position + delta;
 			if (IsBlocked(dest, teleport ? null : delta)) {
 				d(); return true;
 			}
-			_onMoveDone = d;
-			_moveDest = dest;
+			StartCoroutine(Move(dest, d));
 			return true;
 		}
 
-		void Update() {
-			if (_moveDest != null) {
-				var delta = (Vector3Int)_moveDest.Value - transform.position;
+		IEnumerator Move(Vector2Int dest, FlagAtomicDelegate d) {
+			while (true) {
+				yield return new WaitForFixedUpdate();
+				var delta = (Vector3Int)dest - transform.position;
 				var mag = delta.magnitude;
-				var step = MOVE_SPEED * Time.deltaTime;
-				if (step >= mag) {
-					Position = _moveDest.Value;
-					transform.position = (Vector3Int)Position;
-					_moveDest = null;
-					_onMoveDone?.Invoke();
-				}
-				else {
-					transform.position += delta.normalized * step;
-				}
+				var step = MOVE_SPEED * Time.fixedDeltaTime;
+				if (step >= mag) break;
+				transform.position += delta.normalized * step;
 			}
+			Position = dest;
+			transform.position = (Vector3Int)Position;
+			d?.Invoke();
 		}
 	}
 }

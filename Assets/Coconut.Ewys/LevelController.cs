@@ -61,16 +61,17 @@ namespace Coconut.Ewys {
 			_tiles[e.From].Remove(e.Entity);
 			_tiles[e.To].Add(e.Entity);
 			if (e.Entity is Weight w) {
-				if (_tiles.TryGetValue(e.From, out var entities1)) {
-					foreach (var entity in entities1) {
+				if (_tiles.TryGetValue(e.From, out List<EntityBase> entities)) {
+					foreach (var entity in entities) {
 						// TODO step off trigger
 					}
 				}
-				if (_tiles.TryGetValue(e.To, out var entities2)) {
+				if (_tiles.TryGetValue(e.To, out entities)) {
 					var p = w is Player ? w as Player : null;
-					foreach (var entity in entities2) {
+					foreach (var entity in entities) {
 						// TODO teleport
 						// TODO step on trigger
+						// TODO pick up treasure
 					}
 				}
 			}
