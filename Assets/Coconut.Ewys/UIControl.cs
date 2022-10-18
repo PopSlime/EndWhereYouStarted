@@ -35,6 +35,7 @@ namespace Coconut.Ewys {
 		/// When player costinng the step, call this function to rotate the clock and decline step number of showing
 		/// </summary>
 		public void RotateClock(int remainStep, int totalStep) {
+			//TODO Animation
 			stepNumberText.text = remainStep.ToString();
 			m_hourHandTransform.Rotate(new Vector3(0, 0, 360 / totalStep));
 		}
