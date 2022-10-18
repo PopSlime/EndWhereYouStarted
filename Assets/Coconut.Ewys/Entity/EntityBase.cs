@@ -27,6 +27,15 @@ namespace Coconut.Ewys.Entity {
 			}
 		}
 		public event EventHandler<PositionUpdateEventArgs> PositionUpdate;
+
+		protected int State { get; private set; }
+		public void SetState(int flag, bool inverse) {
+			if (inverse) State &= ~flag;
+			else State |= flag;
+			OnSetState();
+		}
+		protected virtual void OnSetState() { }
+
 		public void FromData(EntityData data) {
 			transform.position = (Vector3Int)data.pos.ToVector2Int();
 			Position = data.pos.ToVector2Int();
