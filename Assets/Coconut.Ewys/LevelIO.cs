@@ -32,6 +32,7 @@ namespace Coconut.Ewys {
 				go.transform.SetParent(transform);
 				var comp = go.GetComponent<EntityBase>();
 				comp.FromData(entity);
+				comp.OnPhaseUpdate(Side.Solar, false);
 				comp.PositionUpdate += OnEntityPositionUpdate;
 				_tiles[comp.Position].Add(comp);
 				_entities.Add(comp);
