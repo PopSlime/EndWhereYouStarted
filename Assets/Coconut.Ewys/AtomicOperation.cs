@@ -1,6 +1,4 @@
-﻿using Coconut.Ewys.Entity;
-using System;
-using UnityEngine;
+﻿using System;
 
 namespace Coconut.Ewys {
 	public delegate void FlagAtomicDelegate();
