@@ -45,8 +45,8 @@ namespace Coconut.Ewys {
 				var op = _ops[_currentOp - 1];
 				if (!op.Working) {
 					if (_currentOp > _level.steps) {
-						var atom = new LunarPhaseAtomic(this);
-						atom.Do();
+						foreach (var entity in _entities) entity.OnPhaseUpdate(Side.Lunar);
+						var atom = new DummyAtomic(); atom.Do();
 						_ops.Insert(_currentOp--, atom);
 						_lunarPhase = true;
 					}
@@ -63,12 +63,14 @@ namespace Coconut.Ewys {
 			if (e.Entity is Weight w) {
 				if (_tiles.TryGetValue(e.From, out List<EntityBase> entities)) {
 					foreach (var entity in entities) {
+						if (!entity.IsActive) continue;
 						// TODO step off trigger
 					}
 				}
 				if (_tiles.TryGetValue(e.To, out entities)) {
 					var p = w is Player ? w as Player : null;
 					foreach (var entity in entities) {
+						if (!entity.IsActive) continue;
 						// TODO teleport
 						// TODO step on trigger
 						// TODO pick up treasure
@@ -82,6 +84,7 @@ namespace Coconut.Ewys {
 			if (!_tiles.ContainsKey(pos)) return true;
 			if (_tiles.TryGetValue(pos, out var entities)) {
 				foreach (var entity in entities) {
+					if (!entity.IsActive) continue;
 					if (entity is Obstacle) return true;
 					if (entity is Weight) return delta == null || !entity.TryMove(delta.Value, null, false);
 				}

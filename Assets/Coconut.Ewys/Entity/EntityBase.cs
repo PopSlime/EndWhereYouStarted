@@ -17,6 +17,7 @@ namespace Coconut.Ewys.Entity {
 	}
 	public abstract class EntityBase : MonoBehaviour {
 		Side _side;
+
 		Vector2Int m_position;
 		public Vector2Int Position {
 			get => m_position;
@@ -39,6 +40,12 @@ namespace Coconut.Ewys.Entity {
 			return result;
 		}
 		public abstract EntityData ToDataImpl();
+
+		protected bool IsOnActiveSide { get; private set; }
+		public virtual bool IsActive => IsOnActiveSide;
+		public virtual void OnPhaseUpdate(Side side, bool doTransition = true) {
+			GetComponent<Renderer>().enabled = IsOnActiveSide = _side.HasFlag(side);
+		}
 
 		const float MOVE_SPEED = 2f;
 		public bool TryMove(Vector2Int delta, FlagAtomicDelegate d, bool teleport = false) {

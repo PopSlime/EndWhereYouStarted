@@ -54,7 +54,7 @@ namespace Coconut.Ewys {
 	public class TriggerData : EntityData {
 		public override int type => 9;
 		/// <summary>
-		/// The target entity.
+		/// The ID of the target entity.
 		/// </summary>
 		public int target;
 		/// <summary>
@@ -67,12 +67,19 @@ namespace Coconut.Ewys {
 		public bool inverse;
 		/// <summary>
 		/// The duration before it toggles off after stepped off. Special values:
-		/// <list type="table">
-		/// <item><term>-1</term><description>Does not toggle the flag(s) when stepped off.</description></item>
-		/// <item><term>-2</term><description>Does not toggle off once stepped on.</description></item>
+		/// <list type="bullet">
+		/// <item><term><c>-1</c></term><description>Does not toggle the flag(s) when stepped off.</description></item>
+		/// <item><term><see cref="int.MaxValue" /></term><description>Does not toggle off once stepped on.</description></item>
 		/// </list>
 		/// </summary>
 		public int duration = 0;
+	}
+	public class PortalData : EntityData {
+		public override int type => 10;
+		/// <summary>
+		/// The ID of the target portal.
+		/// </summary>
+		public int? target;
 	}
 	public class EntityDataConverter : CustomCreationConverter<EntityData> {
 		int _currentType;
@@ -90,6 +97,7 @@ namespace Coconut.Ewys {
 				4 => new ObstacleData(),
 				8 => new TreasureData(),
 				9 => new TriggerData(),
+				10 => new PortalData(),
 				_ => throw new ArgumentException("Invalid entity type"),
 			};
 		}
