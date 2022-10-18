@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,9 +36,24 @@ namespace Coconut.Ewys {
 		/// When player costinng the step, call this function to rotate the clock and decline step number of showing
 		/// </summary>
 		public void RotateClock(int remainStep, int totalStep) {
-			//TODO Animation
 			stepNumberText.text = remainStep.ToString();
-			m_hourHandTransform.Rotate(new Vector3(0, 0, 360 / totalStep));
+			//TODO If mulitple coroutines exist at the same time
+			StartCoroutine(RotateAround(360 / totalStep,0.1f));
+		}
+
+		IEnumerator RotateAround(float angel, float time)//携程函数 IEnumerator开头
+		{
+			float number = time/Time.fixedDeltaTime;//计算总量
+			float nextAngel = angel / number;//计算要转多少 固定帧率
+
+			for (int i = 0; i < number; i++) {
+				transform.Rotate(new Vector3(0, 0, nextAngel));//转向
+				yield return new WaitForFixedUpdate();//固定帧率下一帧再执行
+			}
+
 		}
 	}
+
+
+
 }
