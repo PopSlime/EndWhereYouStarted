@@ -12,7 +12,7 @@ namespace Coconut.Ewys {
 		public static int CurrentLevel;
 
 		int _currentPlayer = 0;
-		List<AtomicOperation> _ops = new() { new DummyAtomic() };
+		readonly List<AtomicOperation> _ops = new() { new DummyAtomic() };
 		int _currentOp = 1;
 		bool _lunarPhase;
 
@@ -67,16 +67,10 @@ namespace Coconut.Ewys {
 					}
 				}
 				if (_tiles.TryGetValue(e.To, out var entities2)) {
+					var p = w is Player ? w as Player : null;
 					foreach (var entity in entities2) {
 						// TODO teleport
 						// TODO step on trigger
-					}
-				}
-			}
-			if (e.Entity is Player p) {
-				if (_tiles.TryGetValue(e.To, out var entities)) {
-					foreach (var entity in entities) {
-						// TODO pick up treasure
 					}
 				}
 			}
