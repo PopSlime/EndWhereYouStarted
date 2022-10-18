@@ -74,12 +74,17 @@ namespace Coconut.Ewys {
 					var p = w is Player ? w as Player : null;
 					foreach (var entity in entities) {
 						if (!entity.IsActive) continue;
+						if (p != null) {
+							if (entity is Treasure treasure) {
+
+							}
+						}
 						// TODO teleport
 						// TODO step on trigger
-						// TODO pick up treasure
 					}
 				}
 			}
+		}
 
 		public static void PushBlockingAtom(AtomicOperation atom) => Instance.PushBlockingAtomImpl(atom);
 		public void PushBlockingAtomImpl(AtomicOperation atom) {
