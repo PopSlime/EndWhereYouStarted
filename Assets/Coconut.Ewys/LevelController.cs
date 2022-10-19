@@ -1,5 +1,6 @@
 ﻿using Coconut.Ewys.Entity;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,9 @@ namespace Coconut.Ewys {
 
 		static List<string> _index;
 		public static int CurrentLevel;
+
+		[SerializeField]
+		Light m_light;
 
 		int _currentPlayer = 0;
 		readonly List<OperationAtom> _ops = new() { new DummyAtom() };
@@ -49,7 +53,7 @@ namespace Coconut.Ewys {
 				if (!op.Working) {
 					if (_currentOp > _level.steps) {
 						foreach (var entity in _entities) entity.OnPhaseUpdate(Side.Lunar);
-						var atom = new DummyAtomic(); atom.Do();
+						var atom = new LunarPhaseAtom(); atom.Do();
 						_ops.Insert(_currentOp--, atom);
 						_lunarPhase = true;
 					}
@@ -103,6 +107,32 @@ namespace Coconut.Ewys {
 				}
 			}
 			return false;
+		}
+
+		void ToLunarPhase(FlagAtomDelegate d) => StartCoroutine(CoToLunarPhase(d));
+		IEnumerator CoToLunarPhase(FlagAtomDelegate d) {
+			float time = 0;
+			while (true) {
+				yield return new WaitForFixedUpdate();
+				time += Time.fixedDeltaTime;
+				time = Mathf.Min(1, time);
+				m_light.color = new Color(
+					-0.1f * time + 1,
+					-0.1f * time + 1,
+					0.1f * time + 0.9f
+				);
+				m_light.intensity = -0.4f * time + 1;
+				if (time == 1) break;
+			}
+			d();
+		}
+		public class LunarPhaseAtom : OperationAtom {
+			protected override bool DoImpl(FlagAtomDelegate d) {
+				LevelController.Instance.ToLunarPhase(d);
+				return true;
+			}
+
+			protected override bool UndoImpl(FlagAtomDelegate d) => throw new System.NotSupportedException("Cannot undo this atom.");
 		}
 	}
 }
