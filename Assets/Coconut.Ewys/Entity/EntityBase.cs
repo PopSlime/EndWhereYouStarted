@@ -52,7 +52,13 @@ namespace Coconut.Ewys.Entity {
 		}
 		public abstract EntityData ToDataImpl();
 
-		Renderer _renderer;
+		SpriteRenderer _renderer;
+		protected SpriteRenderer Renderer {
+			get {
+				if (_renderer == null) _renderer = GetComponent<SpriteRenderer>();
+				return _renderer;
+			}
+		}
 		protected bool IsOnActiveSide { get; private set; }
 		public virtual bool IsActive => IsOnActiveSide;
 		public virtual bool IsVisible => true;
@@ -61,14 +67,13 @@ namespace Coconut.Ewys.Entity {
 			UpdateState();
 		}
 		protected void UpdateState() {
-			if (_renderer == null) _renderer = GetComponent<Renderer>();
-			_renderer.material.color = new Color(
+			Renderer.material.color = new Color(
 				_side.HasFlag(Side.Solar) ? 1 : 0.8f,
 				_side.HasFlag(Side.Solar) ? 1 : 0.8f,
 				_side.HasFlag(Side.Lunar) ? 1 : 0.8f,
 				IsActive ? 1 : 0.5f
 			);
-			_renderer.enabled = IsVisible;
+			Renderer.enabled = IsVisible;
 		}
 
 		const float MOVE_SPEED = 2f;
@@ -90,15 +95,18 @@ namespace Coconut.Ewys.Entity {
 				}
 				else {
 					_teleportCount++;
+					OnStartMove(delta, teleport);
 					StartCoroutine(CoTeleport(dest, d));
 				}
 			}
 			else {
 				if (_teleportCount > 0) _teleportCount--;
+				OnStartMove(delta, teleport);
 				StartCoroutine(CoMove(dest, d));
 			}
 			return true;
 		}
+		protected virtual void OnStartMove(Vector2Int delta, bool teleport) { }
 
 		IEnumerator CoTeleport(Vector2Int dest, FlagAtomDelegate d) {
 			yield return null;
