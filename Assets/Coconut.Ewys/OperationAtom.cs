@@ -1,8 +1,8 @@
 ﻿using System;
 
 namespace Coconut.Ewys {
-	public delegate void FlagAtomicDelegate();
-	public abstract class AtomicOperation {
+	public delegate void FlagAtomDelegate();
+	public abstract class OperationAtom {
 		public bool Working { get; private set; }
 		public void Do() {
 			if (Working) throw new InvalidOperationException("Task working");
@@ -14,12 +14,12 @@ namespace Coconut.Ewys {
 			Working = true;
 			if (!UndoImpl(() => Working = false)) Working = false;
 		}
-		protected abstract bool DoImpl(FlagAtomicDelegate d);
-		protected abstract bool UndoImpl(FlagAtomicDelegate d);
+		protected abstract bool DoImpl(FlagAtomDelegate d);
+		protected abstract bool UndoImpl(FlagAtomDelegate d);
 	}
-	public class DummyAtomic : AtomicOperation {
-		protected override bool DoImpl(FlagAtomicDelegate d) { d(); return true; }
+	public class DummyAtom : OperationAtom {
+		protected override bool DoImpl(FlagAtomDelegate d) { d(); return true; }
 
-		protected override bool UndoImpl(FlagAtomicDelegate d) { d(); return true; }
+		protected override bool UndoImpl(FlagAtomDelegate d) { d(); return true; }
 	}
 }

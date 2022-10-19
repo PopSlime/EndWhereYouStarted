@@ -57,7 +57,7 @@ namespace Coconut.Ewys.Entity {
 		}
 
 		const float MOVE_SPEED = 2f;
-		public bool TryMove(Vector2Int delta, FlagAtomicDelegate d, bool teleport = false) {
+		public bool TryMove(Vector2Int delta, FlagAtomDelegate d, bool teleport = false) {
 			Vector2Int dest = Position + delta;
 			if (IsBlocked(dest, teleport ? null : delta)) {
 				d(); return true;
@@ -66,7 +66,7 @@ namespace Coconut.Ewys.Entity {
 			return true;
 		}
 
-		IEnumerator Move(Vector2Int dest, FlagAtomicDelegate d) {
+		IEnumerator Move(Vector2Int dest, FlagAtomDelegate d) {
 			while (true) {
 				yield return new WaitForFixedUpdate();
 				var delta = (Vector3Int)dest - transform.position;

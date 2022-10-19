@@ -12,8 +12,8 @@ namespace Coconut.Ewys {
 		public static int CurrentLevel;
 
 		int _currentPlayer = 0;
-		readonly List<AtomicOperation> _ops = new() { new DummyAtomic() };
-		readonly List<AtomicOperation> _bops = new();
+		readonly List<OperationAtom> _ops = new() { new DummyAtom() };
+		readonly List<OperationAtom> _bops = new();
 		int _currentOp = 1;
 		bool _lunarPhase;
 
@@ -25,10 +25,10 @@ namespace Coconut.Ewys {
 
 		void Update() {
 			if (Input.GetKeyDown(KeyCode.Tab)) { _currentPlayer++; _currentPlayer %= _players.Count; }
-			if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow   )) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.up   ));
-			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.down ));
-			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.left ));
-			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new PlayerMoveAtomic(_players[_currentPlayer], Vector2Int.right));
+			if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow   )) _ops.Add(new PlayerMoveAtom(_players[_currentPlayer], Vector2Int.up   ));
+			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new PlayerMoveAtom(_players[_currentPlayer], Vector2Int.down ));
+			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new PlayerMoveAtom(_players[_currentPlayer], Vector2Int.left ));
+			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new PlayerMoveAtom(_players[_currentPlayer], Vector2Int.right));
 			while (_bops.Count > 0 && !_bops[0].Working) _bops.RemoveAt(0);
 			if (_bops.Count > 0) return;
 			if (_lunarPhase) {
@@ -86,8 +86,8 @@ namespace Coconut.Ewys {
 			}
 		}
 
-		public static void PushBlockingAtom(AtomicOperation atom) => Instance.PushBlockingAtomImpl(atom);
-		public void PushBlockingAtomImpl(AtomicOperation atom) {
+		public static void PushBlockingAtom(OperationAtom atom) => Instance.PushBlockingAtomImpl(atom);
+		public void PushBlockingAtomImpl(OperationAtom atom) {
 			atom.Do();
 			_bops.Add(atom);
 		}

@@ -2,23 +2,23 @@
 
 namespace Coconut.Ewys.Entity {
 	public class Player : Weight { }
-	public abstract class PlayerAtomic : AtomicOperation {
+	public abstract class PlayerAtom : OperationAtom {
 		protected Player Player { get; private set; }
-		protected PlayerAtomic(Player player) {
+		protected PlayerAtom(Player player) {
 			Player = player;
 		}
 	}
-	public class PlayerMoveAtomic : PlayerAtomic {
+	public class PlayerMoveAtom : PlayerAtom {
 		Vector2Int _delta;
-		public PlayerMoveAtomic(Player player, Vector2Int delta) : base(player) {
+		public PlayerMoveAtom(Player player, Vector2Int delta) : base(player) {
 			_delta = delta;
 		}
 
-		protected override bool DoImpl(FlagAtomicDelegate d) {
+		protected override bool DoImpl(FlagAtomDelegate d) {
 			return Player.TryMove(_delta, d);
 		}
 
-		protected override bool UndoImpl(FlagAtomicDelegate d) {
+		protected override bool UndoImpl(FlagAtomDelegate d) {
 			return Player.TryMove(-_delta, d);
 		}
 	}
