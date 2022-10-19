@@ -22,8 +22,9 @@ namespace Coconut.Ewys.Entity {
 		public Vector2Int Position {
 			get => m_position;
 			set {
-				PositionUpdate?.Invoke(this, new PositionUpdateEventArgs(this, m_position, value));
+				Vector2Int from = m_position;
 				m_position = value;
+				PositionUpdate?.Invoke(this, new PositionUpdateEventArgs(this, from, value));
 			}
 		}
 		public event EventHandler<PositionUpdateEventArgs> PositionUpdate;
@@ -40,6 +41,7 @@ namespace Coconut.Ewys.Entity {
 			transform.position = (Vector3Int)data.pos.ToVector2Int();
 			Position = data.pos.ToVector2Int();
 			_side = data.side;
+			FromDataImpl(data);
 		}
 		protected abstract void FromDataImpl(EntityData data);
 		public EntityData ToData() {
@@ -70,9 +72,10 @@ namespace Coconut.Ewys.Entity {
 		}
 
 		const float MOVE_SPEED = 2f;
+		int _teleportCount;
 		public bool TryMove(Vector2Int delta, FlagAtomDelegate d = null, bool teleport = false) {
 			if (d == null) {
-				var atom = new EntityMoveAtom(this, delta);
+				var atom = new EntityMoveAtom(this, delta, teleport);
 				PushBlockingAtom(atom);
 				return atom.Working;
 			}
@@ -80,6 +83,13 @@ namespace Coconut.Ewys.Entity {
 			if (IsBlocked(dest, teleport ? null : delta)) {
 				d(); return false;
 			}
+			if (teleport)
+				if (_teleportCount > 0) {
+					d();
+					return false;
+				}
+				else _teleportCount++;
+			else if (_teleportCount > 0) _teleportCount--;
 			StartCoroutine(CoMove(dest, d));
 			return true;
 		}
@@ -101,13 +111,15 @@ namespace Coconut.Ewys.Entity {
 	public class EntityMoveAtom : OperationAtom {
 		EntityBase _entity;
 		Vector2Int _delta;
-		public EntityMoveAtom(EntityBase entity, Vector2Int delta) {
+		bool _teleport;
+		public EntityMoveAtom(EntityBase entity, Vector2Int delta, bool teleport = false) {
 			_entity = entity;
 			_delta = delta;
+			_teleport = teleport;
 		}
 
-		protected override void DoImpl(FlagAtomDelegate d) => _entity.TryMove(_delta, d);
+		protected override void DoImpl(FlagAtomDelegate d) => _entity.TryMove(_delta, d, _teleport);
 
-		protected override void UndoImpl(FlagAtomDelegate d) => _entity.TryMove(-_delta, d);
+		protected override void UndoImpl(FlagAtomDelegate d) => _entity.TryMove(-_delta, d, _teleport);
 	}
 }

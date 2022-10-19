@@ -52,7 +52,7 @@ namespace Coconut.Ewys {
 				var op = _ops[_currentOp - 1];
 				if (!op.Working) {
 					if (_currentOp > _level.steps) {
-						foreach (var entity in _entities) entity.OnPhaseUpdate(Side.Lunar);
+						foreach (var entity in _entities.Values) entity.OnPhaseUpdate(Side.Lunar);
 						var atom = new LunarPhaseAtom(); atom.Do();
 						_ops.Insert(_currentOp--, atom);
 						_lunarPhase = true;
@@ -83,7 +83,9 @@ namespace Coconut.Ewys {
 								treasure.PickUp();
 							}
 						}
-						// TODO teleport
+						if (entity is Portal portal && portal.TargetID != null) {
+							w.TryMove(_entities[portal.TargetID.Value].Position - e.Entity.Position, teleport: true);
+						}
 						// TODO step on trigger
 					}
 				}

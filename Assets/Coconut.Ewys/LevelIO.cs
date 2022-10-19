@@ -12,7 +12,7 @@ namespace Coconut.Ewys {
 	public partial class LevelController {
 		LevelData _level;
 		readonly Dictionary<Vector2Int, List<EntityBase>> _tiles = new();
-		readonly List<EntityBase> _entities = new();
+		readonly Dictionary<int, EntityBase> _entities = new();
 		readonly List<Player> _players = new();
 		public void Read(string path) {
 			if (_level != null) throw new InvalidOperationException("Level already loaded.");
@@ -35,7 +35,7 @@ namespace Coconut.Ewys {
 				comp.OnPhaseUpdate(Side.Solar, false);
 				comp.PositionUpdate += OnEntityPositionUpdate;
 				_tiles[comp.Position].Add(comp);
-				_entities.Add(comp);
+				_entities.Add(entity.id, comp);
 				if (comp is Player p) _players.Add(p);
 			}
 		}
