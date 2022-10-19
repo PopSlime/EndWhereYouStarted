@@ -33,6 +33,10 @@ namespace Coconut.Ewys {
 			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.down ));
 			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.left ));
 			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.right));
+#if UNITY_EDITOR
+			if (Input.GetKeyDown(KeyCode.PageDown)) { CurrentLevel++; SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
+			else if (Input.GetKeyDown(KeyCode.PageUp)) { CurrentLevel--; SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
+#endif
 			while (_bops.Count > 0 && !_bops[0].Working) _bops.RemoveAt(0);
 			if (_bops.Count > 0) return;
 			if (_lunarPhase) {
