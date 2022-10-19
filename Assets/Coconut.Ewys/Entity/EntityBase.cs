@@ -83,15 +83,28 @@ namespace Coconut.Ewys.Entity {
 			if (IsBlocked(dest, teleport ? null : delta)) {
 				d(); return false;
 			}
-			if (teleport)
+			if (teleport) {
 				if (_teleportCount > 0) {
 					d();
 					return false;
 				}
-				else _teleportCount++;
-			else if (_teleportCount > 0) _teleportCount--;
-			StartCoroutine(CoMove(dest, d));
+				else {
+					_teleportCount++;
+					StartCoroutine(CoTeleport(dest, d));
+				}
+			}
+			else {
+				if (_teleportCount > 0) _teleportCount--;
+				StartCoroutine(CoMove(dest, d));
+			}
 			return true;
+		}
+
+		IEnumerator CoTeleport(Vector2Int dest, FlagAtomDelegate d) {
+			yield return null;
+			Position = dest;
+			transform.position = (Vector3Int)Position;
+			d();
 		}
 
 		IEnumerator CoMove(Vector2Int dest, FlagAtomDelegate d) {
@@ -109,9 +122,9 @@ namespace Coconut.Ewys.Entity {
 		}
 	}
 	public class EntityMoveAtom : OperationAtom {
-		EntityBase _entity;
-		Vector2Int _delta;
-		bool _teleport;
+		readonly EntityBase _entity;
+		readonly Vector2Int _delta;
+		readonly bool _teleport;
 		public EntityMoveAtom(EntityBase entity, Vector2Int delta, bool teleport = false) {
 			_entity = entity;
 			_delta = delta;
