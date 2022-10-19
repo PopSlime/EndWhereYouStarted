@@ -68,22 +68,19 @@
 			"side": 1
 		},
 		{
-			"type": 8,
-			"id": 5,
-			"pos": [ 5, 5 ],
-			"side": 2
-		},
-		{
 			"type": 10,
 			"id": 6,
 			"pos": [ 5, 2 ],
-			"side": 2
+			"side": 2,
+			"target": 7
+
 		},
 		{
 			"type": 10,
 			"id": 7,
 			"pos": [ 5, 4 ],
-			"side": 2
+			"side": 2,
+			"target": 6
 		},
 		{
 			"type": 1,
