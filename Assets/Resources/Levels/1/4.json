@@ -58,13 +58,15 @@
 			"type": 10,
 			"id": 6,
 			"pos": [ 1, 2 ],
-			"side": 2
+			"side": 2,
+			"target": 7
 		},
 		{
 			"type": 10,
 			"id": 7,
 			"pos": [ 2, 0 ],
-			"side": 2
+			"side": 2,
+			"target": 6
 		}
 	]
 }
