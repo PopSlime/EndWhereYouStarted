@@ -75,11 +75,11 @@ namespace Coconut.Ewys.Entity {
 			if (IsBlocked(dest, teleport ? null : delta)) {
 				d?.Invoke(); return true;
 			}
-			StartCoroutine(Move(dest, d));
+			StartCoroutine(CoMove(dest, d));
 			return true;
 		}
 
-		IEnumerator Move(Vector2Int dest, FlagAtomDelegate d) {
+		IEnumerator CoMove(Vector2Int dest, FlagAtomDelegate d) {
 			while (true) {
 				yield return new WaitForFixedUpdate();
 				var delta = (Vector3Int)dest - transform.position;
