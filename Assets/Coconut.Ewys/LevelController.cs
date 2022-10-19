@@ -29,10 +29,10 @@ namespace Coconut.Ewys {
 
 		void Update() {
 			if (Input.GetKeyDown(KeyCode.Tab)) { _currentPlayer++; _currentPlayer %= _players.Count; }
-			if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow   )) _ops.Add(new PlayerMoveAtom(_players[_currentPlayer], Vector2Int.up   ));
-			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new PlayerMoveAtom(_players[_currentPlayer], Vector2Int.down ));
-			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new PlayerMoveAtom(_players[_currentPlayer], Vector2Int.left ));
-			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new PlayerMoveAtom(_players[_currentPlayer], Vector2Int.right));
+			if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow   )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.up   ));
+			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.down ));
+			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.left ));
+			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.right));
 			while (_bops.Count > 0 && !_bops[0].Working) _bops.RemoveAt(0);
 			if (_bops.Count > 0) return;
 			if (_lunarPhase) {
@@ -127,12 +127,9 @@ namespace Coconut.Ewys {
 			d();
 		}
 		public class LunarPhaseAtom : OperationAtom {
-			protected override bool DoImpl(FlagAtomDelegate d) {
-				LevelController.Instance.ToLunarPhase(d);
-				return true;
-			}
+			protected override void DoImpl(FlagAtomDelegate d) => Instance.ToLunarPhase(d);
 
-			protected override bool UndoImpl(FlagAtomDelegate d) => throw new System.NotSupportedException("Cannot undo this atom.");
+			protected override void UndoImpl(FlagAtomDelegate d) => throw new System.NotSupportedException("Cannot undo this atom.");
 		}
 	}
 }

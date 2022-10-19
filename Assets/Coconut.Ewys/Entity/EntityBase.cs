@@ -71,9 +71,14 @@ namespace Coconut.Ewys.Entity {
 
 		const float MOVE_SPEED = 2f;
 		public bool TryMove(Vector2Int delta, FlagAtomDelegate d = null, bool teleport = false) {
+			if (d == null) {
+				var atom = new EntityMoveAtom(this, delta);
+				PushBlockingAtom(atom);
+				return atom.Working;
+			}
 			Vector2Int dest = Position + delta;
 			if (IsBlocked(dest, teleport ? null : delta)) {
-				d?.Invoke(); return true;
+				d(); return false;
 			}
 			StartCoroutine(CoMove(dest, d));
 			return true;
@@ -90,7 +95,19 @@ namespace Coconut.Ewys.Entity {
 			}
 			Position = dest;
 			transform.position = (Vector3Int)Position;
-			d?.Invoke();
+			d();
 		}
+	}
+	public class EntityMoveAtom : OperationAtom {
+		EntityBase _entity;
+		Vector2Int _delta;
+		public EntityMoveAtom(EntityBase entity, Vector2Int delta) {
+			_entity = entity;
+			_delta = delta;
+		}
+
+		protected override void DoImpl(FlagAtomDelegate d) => _entity.TryMove(_delta, d);
+
+		protected override void UndoImpl(FlagAtomDelegate d) => _entity.TryMove(-_delta, d);
 	}
 }

@@ -7,19 +7,19 @@ namespace Coconut.Ewys {
 		public void Do() {
 			if (Working) throw new InvalidOperationException("Task working");
 			Working = true;
-			if (!DoImpl(() => Working = false)) Working = false;
+			DoImpl(() => Working = false);
 		}
 		public void Undo() {
 			if (Working) throw new InvalidOperationException("Task working");
 			Working = true;
-			if (!UndoImpl(() => Working = false)) Working = false;
+			UndoImpl(() => Working = false);
 		}
-		protected abstract bool DoImpl(FlagAtomDelegate d);
-		protected abstract bool UndoImpl(FlagAtomDelegate d);
+		protected abstract void DoImpl(FlagAtomDelegate d);
+		protected abstract void UndoImpl(FlagAtomDelegate d);
 	}
 	public class DummyAtom : OperationAtom {
-		protected override bool DoImpl(FlagAtomDelegate d) { d(); return true; }
+		protected override void DoImpl(FlagAtomDelegate d) => d();
 
-		protected override bool UndoImpl(FlagAtomDelegate d) { d(); return true; }
+		protected override void UndoImpl(FlagAtomDelegate d) => d();
 	}
 }
