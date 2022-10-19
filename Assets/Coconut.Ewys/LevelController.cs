@@ -99,7 +99,7 @@ namespace Coconut.Ewys {
 				foreach (var entity in entities) {
 					if (!entity.IsActive) continue;
 					if (entity is Obstacle) return true;
-					if (entity is Weight) return delta == null || !entity.TryMove(delta.Value, null, false);
+					if (entity is Weight) return delta == null || !entity.TryMove(delta.Value, teleport: false);
 				}
 			}
 			return false;

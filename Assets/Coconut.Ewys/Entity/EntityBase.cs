@@ -70,10 +70,10 @@ namespace Coconut.Ewys.Entity {
 		}
 
 		const float MOVE_SPEED = 2f;
-		public bool TryMove(Vector2Int delta, FlagAtomDelegate d, bool teleport = false) {
+		public bool TryMove(Vector2Int delta, FlagAtomDelegate d = null, bool teleport = false) {
 			Vector2Int dest = Position + delta;
 			if (IsBlocked(dest, teleport ? null : delta)) {
-				d(); return true;
+				d?.Invoke(); return true;
 			}
 			StartCoroutine(Move(dest, d));
 			return true;
