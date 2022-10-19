@@ -76,7 +76,7 @@ namespace Coconut.Ewys {
 						if (!entity.IsActive) continue;
 						if (p != null) {
 							if (entity is Treasure treasure) {
-
+								treasure.PickUp();
 							}
 						}
 						// TODO teleport

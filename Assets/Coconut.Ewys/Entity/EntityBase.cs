@@ -50,10 +50,23 @@ namespace Coconut.Ewys.Entity {
 		}
 		public abstract EntityData ToDataImpl();
 
+		Renderer _renderer;
 		protected bool IsOnActiveSide { get; private set; }
 		public virtual bool IsActive => IsOnActiveSide;
+		public virtual bool IsVisible => true;
 		public virtual void OnPhaseUpdate(Side side, bool doTransition = true) {
-			GetComponent<Renderer>().enabled = IsOnActiveSide = _side.HasFlag(side);
+			IsOnActiveSide = _side.HasFlag(side);
+			UpdateState();
+		}
+		protected void UpdateState() {
+			if (_renderer == null) _renderer = GetComponent<Renderer>();
+			_renderer.material.color = new Color(
+				_side.HasFlag(Side.Solar) ? 1 : 0.8f,
+				_side.HasFlag(Side.Solar) ? 1 : 0.8f,
+				_side.HasFlag(Side.Lunar) ? 1 : 0.8f,
+				IsActive ? 1 : 0.5f
+			);
+			_renderer.enabled = IsVisible;
 		}
 
 		const float MOVE_SPEED = 2f;

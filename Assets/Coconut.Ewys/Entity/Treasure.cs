@@ -5,5 +5,13 @@
 		public override EntityData ToDataImpl() {
 			throw new System.NotImplementedException();
 		}
+
+		public override bool IsVisible => base.IsVisible && !_pickedUp;
+
+		bool _pickedUp;
+		public void PickUp() {
+			_pickedUp = true;
+			UpdateState();
+		}
 	}
 }
