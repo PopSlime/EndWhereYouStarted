@@ -25,6 +25,11 @@ namespace Coconut.Ewys {
 			Instance = this;
 			_index ??= JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Levels/Index").text);
 			Read(_index[CurrentLevel]);
+			var camera = Camera.main;
+			camera.transform.position = new Vector3(_env.Value.CenterX, _env.Value.CenterY, -10);
+			var ew = _env.Value.Width + 2;
+			var eh = _env.Value.Height + 2;
+			camera.orthographicSize = Mathf.Max(ew * Screen.height / Screen.width, eh) / 2;
 		}
 
 		void Update() {

@@ -1,4 +1,5 @@
 ﻿using Coconut.Ewys.Entity;
+using Cryville.Common.Math;
 using Cryville.Common.Unity;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +15,7 @@ namespace Coconut.Ewys {
 		readonly Dictionary<Vector2Int, List<EntityBase>> _tiles = new();
 		readonly Dictionary<int, EntityBase> _entities = new();
 		readonly List<Player> _players = new();
+		EnvelopInt? _env;
 		public void Read(string path) {
 			if (_level != null) throw new InvalidOperationException("Level already loaded.");
 			foreach (Transform child in transform) GameObject.Destroy(child.gameObject);
@@ -23,6 +25,12 @@ namespace Coconut.Ewys {
 				go.transform.SetParent(transform);
 				var pos = tile.ToVector2Int();
 				go.transform.position = (Vector3Int)pos;
+				if (_env == null) _env = new EnvelopInt(pos.x, pos.y);
+				else {
+					var env = _env.Value;
+					env.Include(pos.x, pos.y);
+					_env = env;
+				}
 				_tiles.Add(pos, new());
 			}
 			foreach (var entity in _level.entities) {
