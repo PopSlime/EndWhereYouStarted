@@ -30,6 +30,8 @@ namespace Coconut.Ewys {
 			var ew = _env.Value.Width + 2;
 			var eh = _env.Value.Height + 2;
 			camera.orthographicSize = Mathf.Max(ew * Screen.height / Screen.width, eh) / 2;
+
+			SceneManager.LoadScene("GamingUI",LoadSceneMode.Additive);
 		}
 
 		void Update() {
