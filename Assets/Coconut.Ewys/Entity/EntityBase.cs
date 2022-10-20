@@ -29,11 +29,17 @@ namespace Coconut.Ewys.Entity {
 		}
 		public event EventHandler<PositionUpdateEventArgs> PositionUpdate;
 
-		protected int State { get; private set; }
+		int m_state;
+		protected int State {
+			get => m_state;
+			private set {
+				m_state = value;
+				OnSetState();
+			}
+		}
 		public void SetState(int flag, bool inverse) {
 			if (inverse) State &= ~flag;
 			else State |= flag;
-			OnSetState();
 		}
 		protected virtual void OnSetState() { }
 
@@ -41,6 +47,7 @@ namespace Coconut.Ewys.Entity {
 			transform.position = (Vector3Int)data.pos.ToVector2Int();
 			Position = data.pos.ToVector2Int();
 			_side = data.side;
+			State = data.state;
 			FromDataImpl(data);
 		}
 		protected abstract void FromDataImpl(EntityData data);
@@ -78,6 +85,7 @@ namespace Coconut.Ewys.Entity {
 
 		const float MOVE_SPEED = 2f;
 		int _teleportCount;
+
 		public bool TryMove(Vector2Int delta, FlagAtomDelegate d = null, bool teleport = false) {
 			if (d == null) {
 				var atom = new EntityMoveAtom(this, delta, teleport);
