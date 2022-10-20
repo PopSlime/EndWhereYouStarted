@@ -8,6 +8,8 @@ namespace Coconut.Ewys {
 	/// Used to control UI 
 	/// </summary>
 	public class UIControl : MonoBehaviour {
+		public static UIControl Instance;
+
 		[SerializeField]
 		GameObject m_explainInfo;
 
@@ -18,11 +20,12 @@ namespace Coconut.Ewys {
 		RectTransform m_hourHandTransform;
 
 		[SerializeField]
-		Text stepNumberText;
+		Text m_stepNumberText;
 		[SerializeField]
-		Text explainText;
+		Text m_explainText;
 
 		private void Awake() {
+			Instance = this;
 			switch (LevelController.CurrentLevel) {
 				case 0:
 					SetExplainText("有点透明的星星只有晚上才会出现\n要把所有的星星都拿到才行哦");
@@ -46,10 +49,14 @@ namespace Coconut.Ewys {
 					SetExplainText("加油吧,少年");
 					break;
 			}
+
+			m_stepNumberText.text = LevelController.Instance.GetStep().ToString();
+			
 		}
 
 		void SetExplainText(string explainText) {
-			this.explainText.text = explainText;
+			this.m_explainText.text = explainText;
+			//LevelController.
 		}
 
 
@@ -70,19 +77,20 @@ namespace Coconut.Ewys {
 		/// <summary>
 		/// When player costinng the step, call this function to rotate the clock and decline step number of showing
 		/// </summary>
-		public void RotateClock(int remainStep, int totalStep) {
-			stepNumberText.text = remainStep.ToString();
+		public void RotateClock(int remainStep, int totalStep,bool isUndo=false) {
+			m_stepNumberText.text = remainStep.ToString();
 			//TODO If mulitple coroutines exist at the same time
-			StartCoroutine(RotateAround(360 / totalStep,0.1f));
+			StartCoroutine(RotateAround(360 / totalStep, 0.1f,isUndo?1:-1));
 		}
 
-		IEnumerator RotateAround(float angel, float time)//携程函数 IEnumerator开头
+
+		IEnumerator RotateAround(float angel, float time,int dir)//携程函数 IEnumerator开头
 		{
 			float number = time/Time.fixedDeltaTime;//计算总量
-			float nextAngel = angel / number;//计算要转多少 固定帧率
+			float nextAngel = dir*angel / number;//计算要转多少 固定帧率
 
 			for (int i = 0; i < number; i++) {
-				transform.Rotate(new Vector3(0, 0, nextAngel));//转向
+				m_hourHandTransform.transform.Rotate(new Vector3(0, 0, nextAngel));//转向
 				yield return new WaitForFixedUpdate();//固定帧率下一帧再执行
 			}
 

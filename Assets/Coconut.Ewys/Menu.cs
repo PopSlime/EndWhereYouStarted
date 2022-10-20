@@ -40,7 +40,6 @@ namespace Coconut.Ewys {
 		/// </summary>
 		/// <param name="level"></param>
 		public void LoadLevel(int level) {
-			Debug.Log(level);
 			LevelController.CurrentLevel = level;
 			SceneManager.LoadScene("Level");
 		}

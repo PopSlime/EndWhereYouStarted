@@ -1095,8 +1095,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_explainInfo: {fileID: 93987533}
   m_hourHandTransform: {fileID: 551685292}
-  stepNumberText: {fileID: 822568069}
-  explainText: {fileID: 809714957}
+  m_stepNumberText: {fileID: 822568069}
+  m_explainText: {fileID: 809714957}
 --- !u!114 &1151857923
 MonoBehaviour:
   m_ObjectHideFlags: 0

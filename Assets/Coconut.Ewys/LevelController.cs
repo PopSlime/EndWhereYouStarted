@@ -21,6 +21,9 @@ namespace Coconut.Ewys {
 		int _currentOp = 1;
 		bool _lunarPhase;
 
+		//[HideInInspector]
+		//public UIControl _control;
+
 		void Awake() {
 			Instance = this;
 			_index ??= JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Levels/Index").text);
@@ -56,6 +59,7 @@ namespace Coconut.Ewys {
 					}
 					else {
 						_ops[_currentOp--].Undo();
+						UIControl.Instance.RotateClock(_level.steps - _currentOp, _level.steps, true);
 					}
 				}
 			}
@@ -70,6 +74,7 @@ namespace Coconut.Ewys {
 					}
 					else if (_currentOp < _ops.Count) {
 						_ops[_currentOp++].Do();
+						UIControl.Instance.RotateClock(_level.steps- _currentOp+1, _level.steps);
 					}
 				}
 			}
@@ -143,6 +148,10 @@ namespace Coconut.Ewys {
 			protected override void DoImpl(FlagAtomDelegate d) => Instance.ToLunarPhase(d);
 
 			protected override void UndoImpl(FlagAtomDelegate d) => throw new System.NotSupportedException("Cannot undo this atom.");
+		}
+
+		public int GetStep() {
+			return _level.steps;
 		}
 	}
 }
