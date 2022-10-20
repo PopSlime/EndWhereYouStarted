@@ -78,7 +78,7 @@ namespace Coconut.Ewys {
 
 		void RotateClock(int remainStep, int totalStep, bool isUndo, FlagAtomDelegate d) {
 			m_stepNumberText.text = remainStep.ToString();
-			StartCoroutine(CoRotateClock(360f / totalStep, 0.1f, isUndo ? 1 : -1, d));
+			StartCoroutine(CoRotateClock(360f / totalStep, 0.5f, isUndo ? 1 : -1, d));
 		}
 
 		IEnumerator CoRotateClock(float angle, float time, int dir, FlagAtomDelegate d) {
