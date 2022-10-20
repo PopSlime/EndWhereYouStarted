@@ -18,8 +18,16 @@ namespace Coconut.Ewys {
 		protected abstract void UndoImpl(FlagAtomDelegate d);
 	}
 	public class DummyAtom : OperationAtom {
-		protected override void DoImpl(FlagAtomDelegate d) => d();
+		bool _done;
 
-		protected override void UndoImpl(FlagAtomDelegate d) => d();
+		public DummyAtom() : this(true) { }
+
+		public DummyAtom(bool done) {
+			_done = done;
+		}
+
+		protected override void DoImpl(FlagAtomDelegate d) { if (_done) d(); }
+
+		protected override void UndoImpl(FlagAtomDelegate d) { if (_done) d(); }
 	}
 }
