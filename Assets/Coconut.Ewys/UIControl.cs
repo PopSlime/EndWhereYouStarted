@@ -68,8 +68,8 @@ namespace Coconut.Ewys {
 			SceneManager.LoadScene("level");
 		}
 
-		public void ShowExplainInfo() {
-			m_explainInfo.SetActive(true);
+		public void Return() {
+			SceneManager.LoadScene("Menu");
 		}
 
 		public void HideExplainInfo() {
