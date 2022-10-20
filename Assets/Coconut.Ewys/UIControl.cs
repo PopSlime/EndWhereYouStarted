@@ -76,10 +76,7 @@ namespace Coconut.Ewys {
 			m_explainInfo.SetActive(false);
 		}
 
-		/// <summary>
-		/// When player costinng the step, call this function to rotate the clock and decline step number of showing
-		/// </summary>
-		public void RotateClock(int remainStep, int totalStep, bool isUndo, FlagAtomDelegate d) {
+		void RotateClock(int remainStep, int totalStep, bool isUndo, FlagAtomDelegate d) {
 			m_stepNumberText.text = remainStep.ToString();
 			StartCoroutine(CoRotateClock(360f / totalStep, 0.1f, isUndo ? 1 : -1, d));
 		}
@@ -93,23 +90,23 @@ namespace Coconut.Ewys {
 			}
 			d();
 		}
-	}
 
-	public class RotateClockAtom : OperationAtom {
-		readonly int remainStep;
-		readonly int totalStep;
-		readonly bool isUndo;
+		public class RotateClockAtom : OperationAtom {
+			readonly int remainStep;
+			readonly int totalStep;
+			readonly bool isUndo;
 
-		public RotateClockAtom(int remainStep, int totalStep, bool isUndo = false) {
-			this.remainStep = remainStep;
-			this.totalStep = totalStep;
-			this.isUndo = isUndo;
+			public RotateClockAtom(int remainStep, int totalStep, bool isUndo = false) {
+				this.remainStep = remainStep;
+				this.totalStep = totalStep;
+				this.isUndo = isUndo;
+			}
+
+			protected override void DoImpl(FlagAtomDelegate d) {
+				Instance.RotateClock(remainStep, totalStep, isUndo, d);
+			}
+
+			protected override void UndoImpl(FlagAtomDelegate d) => throw new NotSupportedException();
 		}
-
-		protected override void DoImpl(FlagAtomDelegate d) {
-			UIControl.Instance.RotateClock(remainStep, totalStep, isUndo, d);
-		}
-
-		protected override void UndoImpl(FlagAtomDelegate d) => throw new NotSupportedException();
 	}
 }

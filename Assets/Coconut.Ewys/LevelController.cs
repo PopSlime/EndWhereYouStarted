@@ -68,7 +68,7 @@ namespace Coconut.Ewys {
 					}
 					else {
 						_ops[_currentOp--].Undo();
-						PushBlockingAtom(new RotateClockAtom(_level.steps - _currentOp, _level.steps, true));
+						PushBlockingAtom(new UIControl.RotateClockAtom(_level.steps - _currentOp, _level.steps, true));
 					}
 				}
 			}
@@ -83,7 +83,7 @@ namespace Coconut.Ewys {
 					}
 					else if (_currentOp < _ops.Count) {
 						_ops[_currentOp++].Do();
-						PushBlockingAtom(new RotateClockAtom(_level.steps - _currentOp + 1, _level.steps));
+						PushBlockingAtom(new UIControl.RotateClockAtom(_level.steps - _currentOp + 1, _level.steps));
 					}
 				}
 			}
