@@ -28,21 +28,26 @@ namespace Coconut.Ewys {
 			Instance = this;
 			_index ??= JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Levels/Index").text);
 			Read(_index[CurrentLevel]);
-			var camera = Camera.main;
-			camera.transform.position = new Vector3(_env.Value.CenterX, _env.Value.CenterY, -10);
-			var ew = _env.Value.Width + 2;
-			var eh = _env.Value.Height + 2;
-			camera.orthographicSize = Mathf.Max(ew * Screen.height / Screen.width, eh) / 2;
+
+			if (_env != null) {
+				var camera = Camera.main;
+				camera.transform.position = new Vector3(_env.Value.CenterX, _env.Value.CenterY, -10);
+				var ew = _env.Value.Width + 2;
+				var eh = _env.Value.Height + 2;
+				camera.orthographicSize = Mathf.Max(ew * Screen.height / Screen.width, eh) / 2;
+			}
 
 			SceneManager.LoadScene("GamingUI", LoadSceneMode.Additive);
 		}
 
 		void Update() {
-			if (Input.GetKeyDown(KeyCode.Tab)) { _currentPlayer++; _currentPlayer %= _players.Count; }
-			if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow   )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.up   ));
-			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.down ));
-			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.left ));
-			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.right));
+			if (_players.Count > 0) {
+				if (Input.GetKeyDown(KeyCode.Tab)) { _currentPlayer++; _currentPlayer %= _players.Count; }
+				if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.up));
+				if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.down));
+				if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.left));
+				if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.right));
+			}
 #if UNITY_EDITOR
 			if (Input.GetKeyDown(KeyCode.PageDown)) { CurrentLevel++; SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
 			else if (Input.GetKeyDown(KeyCode.PageUp)) { CurrentLevel--; SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
@@ -59,8 +64,11 @@ namespace Coconut.Ewys {
 								SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 								break;
 							case -1:
+								PushBlockingAtom(new DummyAtom(false));
+								PushBlockingAtom(new TintLightAtom(new Color(1, 0, 0), 0.25f, 0.5f));
 								break;
 							case -2:
+								PushBlockingAtom(new DummyAtom(false));
 								break;
 							default:
 								throw new NotImplementedException();
@@ -77,7 +85,7 @@ namespace Coconut.Ewys {
 				if (!op.Working) {
 					if (_currentOp > _level.steps) {
 						foreach (var entity in _entities.Values) entity.OnPhaseUpdate(Side.Lunar);
-						var atom = new LunarPhaseAtom(); atom.Do();
+						var atom = new TintLightAtom(new Color(0.9f, 0.9f, 1), 0.6f, 1); atom.Do();
 						_ops.Insert(_currentOp--, atom);
 						_lunarPhase = true;
 					}
@@ -159,25 +167,35 @@ namespace Coconut.Ewys {
 			return false;
 		}
 
-		void ToLunarPhase(FlagAtomDelegate d) => StartCoroutine(CoToLunarPhase(d));
-		IEnumerator CoToLunarPhase(FlagAtomDelegate d) {
+		void TintLight(Color color, float intensity, float duration, FlagAtomDelegate d)
+			=> StartCoroutine(CoTintLight(color, intensity, duration, d));
+		IEnumerator CoTintLight(Color color, float intensity, float duration, FlagAtomDelegate d) {
 			float time = 0;
+			var c0 = m_light.color;
+			var i0 = m_light.intensity;
 			while (true) {
 				yield return new WaitForFixedUpdate();
 				time += Time.fixedDeltaTime;
-				time = Mathf.Min(1, time);
-				m_light.color = new Color(
-					-0.1f * time + 1,
-					-0.1f * time + 1,
-					0.1f * time + 0.9f
-				);
-				m_light.intensity = -0.4f * time + 1;
-				if (time == 1) break;
+				time = Mathf.Min(duration, time);
+				var mix = time / duration;
+				m_light.color = Color.Lerp(c0, color, mix);
+				m_light.intensity = Mathf.Lerp(i0, intensity, mix);
+				if (time == duration) break;
 			}
 			d();
 		}
-		public class LunarPhaseAtom : OperationAtom {
-			protected override void DoImpl(FlagAtomDelegate d) => Instance.ToLunarPhase(d);
+		public class TintLightAtom : OperationAtom {
+			readonly Color color;
+			readonly float intensity;
+			readonly float duration;
+
+			public TintLightAtom(Color color, float intensity, float duration) {
+				this.color = color;
+				this.intensity = intensity;
+				this.duration = duration;
+			}
+
+			protected override void DoImpl(FlagAtomDelegate d) => Instance.TintLight(color, intensity, duration, d);
 
 			protected override void UndoImpl(FlagAtomDelegate d) => throw new NotSupportedException("Cannot undo this atom.");
 		}
