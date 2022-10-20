@@ -60,7 +60,7 @@ namespace Coconut.Ewys {
 
 		}
 
-		void SetExplainText(string explainText) {
+		public void SetExplainText(string explainText) {
 			this.m_explainText.text = explainText;
 			//LevelController.
 		}

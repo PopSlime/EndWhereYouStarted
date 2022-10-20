@@ -1,4 +1,4 @@
-﻿using Coconut.Ewys.Entity;
+using Coconut.Ewys.Entity;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -66,9 +66,11 @@ namespace Coconut.Ewys {
 							case -1:
 								PushBlockingAtom(new DummyAtom(false));
 								PushBlockingAtom(new TintLightAtom(new Color(1, 0, 0), 0.25f, 0.5f));
+								UIControl.Instance.SetExplainText("失败：没能回到营地\n点击右上角按钮重试");
 								break;
 							case -2:
 								PushBlockingAtom(new DummyAtom(false));
+								UIControl.Instance.SetExplainText("失败：没能获取所有宝藏\n点击右上角按钮重试");
 								break;
 							default:
 								throw new NotImplementedException();

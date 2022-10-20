@@ -77,7 +77,7 @@ namespace Coconut.Ewys.Entity {
 			Renderer.material.color = new Color(
 				_side.HasFlag(Side.Solar) ? 1 : 0.8f,
 				_side.HasFlag(Side.Solar) ? 1 : 0.8f,
-				_side.HasFlag(Side.Lunar) ? 1 : 0.8f,
+				_side.HasFlag(Side.Lunar) ? 1 : 0.4f,
 				IsActive ? 1 : 0.5f
 			);
 			Renderer.enabled = IsVisible;
