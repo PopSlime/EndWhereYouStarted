@@ -44,9 +44,13 @@ namespace Coconut.Ewys {
 				case 4:
 					SetExplainText("按下 Tab 键，就可以切换人哦，请注意合理分配步数");
 					break;
-				case 6:
+				case 5:
 					SetExplainText("有的箱子到了夜晚也会继续存在");
 					break;
+				case 13:
+					SetExplainText("恭喜你,通过了demo的所有关卡");
+					m_stepNumberText.gameObject.SetActive(false);
+					return;
 				default:
 					SetExplainText("加油吧，少年");
 					break;

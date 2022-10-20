@@ -1630,8 +1630,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1151857922}
-        m_TargetAssemblyTypeName: UIControl, Assembly-CSharp
-        m_MethodName: ShowExplainInfo
+        m_TargetAssemblyTypeName: Coconut.Ewys.UIControl, Assembly-CSharp
+        m_MethodName: Return
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
