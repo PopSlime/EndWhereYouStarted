@@ -36,13 +36,13 @@ namespace Coconut.Ewys {
 					SetExplainText("碰到障碍物和边界的话，就会动不了");
 					break;
 				case 2:
-					SetExplainText("把箱子推到踏板上，就能打开宝箱，宝箱里也有星星哦");
+					SetExplainText("把箱子推到魔法阵上就能打开宝箱\n宝箱里也有星星哦");
 					break;
 				case 3:
-					SetExplainText("进了传送门，就会被传送到另一边");
+					SetExplainText("进了虫洞就会被传送到另一端");
 					break;
 				case 4:
-					SetExplainText("按下 Tab 键，就可以切换人哦，请注意合理分配步数");
+					SetExplainText("按下 Tab 键就可以切换人哦\n注意合理分配步数");
 					break;
 				case 5:
 					SetExplainText("有的箱子到了夜晚也会继续存在");
