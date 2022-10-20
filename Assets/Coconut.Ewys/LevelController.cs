@@ -1,5 +1,6 @@
 ﻿using Coconut.Ewys.Entity;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,8 +22,7 @@ namespace Coconut.Ewys {
 		int _currentOp = 1;
 		bool _lunarPhase;
 
-		//[HideInInspector]
-		//public UIControl _control;
+		public int Step => _level.steps;
 
 		void Awake() {
 			Instance = this;
@@ -34,7 +34,7 @@ namespace Coconut.Ewys {
 			var eh = _env.Value.Height + 2;
 			camera.orthographicSize = Mathf.Max(ew * Screen.height / Screen.width, eh) / 2;
 
-			SceneManager.LoadScene("GamingUI",LoadSceneMode.Additive);
+			SceneManager.LoadScene("GamingUI", LoadSceneMode.Additive);
 		}
 
 		void Update() {
@@ -59,7 +59,7 @@ namespace Coconut.Ewys {
 					}
 					else {
 						_ops[_currentOp--].Undo();
-						UIControl.Instance.RotateClock(_level.steps - _currentOp, _level.steps, true);
+						PushBlockingAtom(new RotateClockAtom(_level.steps - _currentOp, _level.steps, true));
 					}
 				}
 			}
@@ -74,7 +74,7 @@ namespace Coconut.Ewys {
 					}
 					else if (_currentOp < _ops.Count) {
 						_ops[_currentOp++].Do();
-						UIControl.Instance.RotateClock(_level.steps- _currentOp+1, _level.steps);
+						PushBlockingAtom(new RotateClockAtom(_level.steps - _currentOp + 1, _level.steps));
 					}
 				}
 			}
@@ -147,11 +147,7 @@ namespace Coconut.Ewys {
 		public class LunarPhaseAtom : OperationAtom {
 			protected override void DoImpl(FlagAtomDelegate d) => Instance.ToLunarPhase(d);
 
-			protected override void UndoImpl(FlagAtomDelegate d) => throw new System.NotSupportedException("Cannot undo this atom.");
-		}
-
-		public int GetStep() {
-			return _level.steps;
+			protected override void UndoImpl(FlagAtomDelegate d) => throw new NotSupportedException("Cannot undo this atom.");
 		}
 	}
 }
