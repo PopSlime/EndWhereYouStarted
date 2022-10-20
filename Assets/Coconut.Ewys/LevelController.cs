@@ -28,21 +28,26 @@ namespace Coconut.Ewys {
 			Instance = this;
 			_index ??= JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Levels/Index").text);
 			Read(_index[CurrentLevel]);
-			var camera = Camera.main;
-			camera.transform.position = new Vector3(_env.Value.CenterX, _env.Value.CenterY, -10);
-			var ew = _env.Value.Width + 2;
-			var eh = _env.Value.Height + 2;
-			camera.orthographicSize = Mathf.Max(ew * Screen.height / Screen.width, eh) / 2;
+
+			if (_env != null) {
+				var camera = Camera.main;
+				camera.transform.position = new Vector3(_env.Value.CenterX, _env.Value.CenterY, -10);
+				var ew = _env.Value.Width + 2;
+				var eh = _env.Value.Height + 2;
+				camera.orthographicSize = Mathf.Max(ew * Screen.height / Screen.width, eh) / 2;
+			}
 
 			SceneManager.LoadScene("GamingUI", LoadSceneMode.Additive);
 		}
 
 		void Update() {
-			if (Input.GetKeyDown(KeyCode.Tab)) { _currentPlayer++; _currentPlayer %= _players.Count; }
-			if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow   )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.up   ));
-			if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.down ));
-			if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow )) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.left ));
-			if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.right));
+			if (_players.Count > 0) {
+				if (Input.GetKeyDown(KeyCode.Tab)) { _currentPlayer++; _currentPlayer %= _players.Count; }
+				if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.up));
+				if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.down));
+				if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.left));
+				if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) _ops.Add(new EntityMoveAtom(_players[_currentPlayer], Vector2Int.right));
+			}
 #if UNITY_EDITOR
 			if (Input.GetKeyDown(KeyCode.PageDown)) { CurrentLevel++; SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
 			else if (Input.GetKeyDown(KeyCode.PageUp)) { CurrentLevel--; SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
