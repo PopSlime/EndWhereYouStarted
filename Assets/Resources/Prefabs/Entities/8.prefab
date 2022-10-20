@@ -97,3 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2fac0d5d70cfe44a94099609dde0704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_spriteChestClosed: {fileID: 21300000, guid: 757669a5be0ef7b4b90d53c9963c854a, type: 3}
+  m_spriteChestOpened: {fileID: 21300000, guid: deec7a1912a25ba4baf419b5e18ed2e9, type: 3}
+  m_spriteChestOpenedEmpty: {fileID: 21300000, guid: 3dd6560a11f83784bbbfcf29ce682164, type: 3}
