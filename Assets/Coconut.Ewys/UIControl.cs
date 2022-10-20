@@ -30,25 +30,25 @@ namespace Coconut.Ewys {
 			Instance = this;
 			switch (LevelController.CurrentLevel) {
 				case 0:
-					SetExplainText("ÓĞµãÍ¸Ã÷µÄĞÇĞÇÖ»ÓĞÍíÉÏ²Å»á³öÏÖ\nÒª°ÑËùÓĞµÄĞÇĞÇ¶¼ÄÃµ½²ÅĞĞÅ¶");
+					SetExplainText("æœ‰ç‚¹é€æ˜çš„æ˜Ÿæ˜Ÿåªæœ‰æ™šä¸Šæ‰ä¼šå‡ºç°\nè¦æŠŠæ‰€æœ‰çš„æ˜Ÿæ˜Ÿéƒ½æ‹¿åˆ°æ‰è¡Œå“¦");
 					break;
 				case 1:
-					SetExplainText("Åöµ½ÕÏ°­ÎïºÍ±ß½çµÄ»°£¬¾Í»á¶¯²»ÁË");
+					SetExplainText("ç¢°åˆ°éšœç¢ç‰©å’Œè¾¹ç•Œçš„è¯ï¼Œå°±ä¼šåŠ¨ä¸äº†");
 					break;
 				case 2:
-					SetExplainText("°ÑÏä×ÓÍÆµ½Ì¤°åÉÏ£¬¾ÍÄÜ´ò¿ª±¦Ïä£¬±¦ÏäÀïÒ²ÓĞĞÇĞÇÅ¶");
+					SetExplainText("æŠŠç®±å­æ¨åˆ°è¸æ¿ä¸Šï¼Œå°±èƒ½æ‰“å¼€å®ç®±ï¼Œå®ç®±é‡Œä¹Ÿæœ‰æ˜Ÿæ˜Ÿå“¦");
 					break;
 				case 3:
-					SetExplainText("½øÁË´«ËÍÃÅ£¬¾Í»á±»´«ËÍµ½ÁíÒ»±ß");
+					SetExplainText("è¿›äº†ä¼ é€é—¨ï¼Œå°±ä¼šè¢«ä¼ é€åˆ°å¦ä¸€è¾¹");
 					break;
 				case 4:
-					SetExplainText("°´ÏÂ Tab ¼ü£¬¾Í¿ÉÒÔÇĞ»»ÈËÅ¶£¬Çë×¢ÒâºÏÀí·ÖÅä²½Êı");
+					SetExplainText("æŒ‰ä¸‹ Tab é”®ï¼Œå°±å¯ä»¥åˆ‡æ¢äººå“¦ï¼Œè¯·æ³¨æ„åˆç†åˆ†é…æ­¥æ•°");
 					break;
 				case 6:
-					SetExplainText("ÓĞµÄÏä×Óµ½ÁËÒ¹ÍíÒ²»á¼ÌĞø´æÔÚ");
+					SetExplainText("æœ‰çš„ç®±å­åˆ°äº†å¤œæ™šä¹Ÿä¼šç»§ç»­å­˜åœ¨");
 					break;
 				default:
-					SetExplainText("¼ÓÓÍ°É£¬ÉÙÄê");
+					SetExplainText("åŠ æ²¹å§ï¼Œå°‘å¹´");
 					break;
 			}
 
