@@ -53,6 +53,7 @@ namespace Coconut.Ewys {
 			m_stepNumberText.text = LevelController.Instance.GetStep().ToString();
 			
 		}
+		
 
 		void SetExplainText(string explainText) {
 			this.m_explainText.text = explainText;
@@ -64,7 +65,7 @@ namespace Coconut.Ewys {
 		/// Restart the game
 		/// </summary>
 		public void Remake() {
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene("level");
 		}
 
 		public void ShowExplainInfo() {
