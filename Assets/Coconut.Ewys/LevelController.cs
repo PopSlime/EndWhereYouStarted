@@ -88,7 +88,7 @@ namespace Coconut.Ewys {
 					if (_currentOp > _level.steps) {
 						foreach (var entity in _entities.Values) entity.OnPhaseUpdate(Side.Lunar);
 						foreach (var entity in _entities.Values) entity.Position = entity.Position;
-							var atom = new TintLightAtom(new Color(0.9f, 0.9f, 1), 0.6f, 1); atom.Do();
+						var atom = new TintLightAtom(new Color(0.9f, 0.9f, 1), 0.6f, 1); atom.Do();
 						_ops.Insert(_currentOp--, atom);
 						_lunarPhase = true;
 					}
