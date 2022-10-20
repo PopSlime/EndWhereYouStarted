@@ -127,7 +127,9 @@ namespace Coconut.Ewys {
 				if (_tiles.TryGetValue(e.From, out List<EntityBase> entities)) {
 					foreach (var entity in entities) {
 						if (!entity.IsActive) continue;
-						// TODO step off trigger
+						if (entity is Trigger trigger) {
+							_entities[trigger.TargetID].SetState(trigger.Flag, !trigger.IsInverse);
+						}
 					}
 				}
 				if (_tiles.TryGetValue(e.To, out entities)) {
@@ -136,13 +138,15 @@ namespace Coconut.Ewys {
 						if (!entity.IsActive) continue;
 						if (p != null) {
 							if (entity is Treasure treasure) {
-								treasure.PickUp();
+								treasure.TryPickUp();
 							}
 						}
 						if (entity is Portal portal && portal.TargetID != null) {
 							w.TryMove(_entities[portal.TargetID.Value].Position - e.Entity.Position, teleport: true);
 						}
-						// TODO step on trigger
+						if (entity is Trigger trigger) {
+							_entities[trigger.TargetID].SetState(trigger.Flag, trigger.IsInverse);
+						}
 					}
 				}
 			}

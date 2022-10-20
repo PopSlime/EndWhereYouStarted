@@ -54,8 +54,8 @@
 			"id": 5,
 			"pos": [ 2, 0 ],
 			"side": 2,
-			"target": 4
-
+			"target": 4,
+			"flag": 1
 		}
 	]
 }
