@@ -350,7 +350,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Remake
+  m_Text: "\u91CD\u5F00"
 --- !u!222 &161236287
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -699,7 +699,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Explain
+  m_Text: "\u8FD4\u56DE"
 --- !u!222 &771842248
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1563,7 +1563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1598840479
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1580,10 +1580,10 @@ RectTransform:
   m_Father: {fileID: 2020001454}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 68.390015, y: -19.540009}
-  m_SizeDelta: {x: 40.26001, y: 39.080017}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1598840480
 MonoBehaviour:
@@ -2098,7 +2098,7 @@ RectTransform:
   m_Father: {fileID: 1151857921}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.88, y: 0.88}
+  m_AnchorMin: {x: 0.8, y: 0.8}
   m_AnchorMax: {x: 0.98, y: 0.98}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
