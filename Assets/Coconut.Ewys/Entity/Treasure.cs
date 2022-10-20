@@ -6,11 +6,11 @@
 			throw new System.NotImplementedException();
 		}
 
-		public override bool IsVisible => base.IsVisible && !_pickedUp;
+		public override bool IsVisible => base.IsVisible && !IsPickedUp;
 
-		bool _pickedUp;
+		public bool IsPickedUp { get; private set; }
 		public void PickUp() {
-			_pickedUp = true;
+			IsPickedUp = true;
 			UpdateState();
 		}
 	}

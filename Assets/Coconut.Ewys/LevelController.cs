@@ -53,9 +53,18 @@ namespace Coconut.Ewys {
 				var op = _ops[_currentOp + 1];
 				if (!op.Working) {
 					if (_currentOp <= 0) {
-						CurrentLevel++;
-						SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-						// TODO dest judge
+						switch (Judge()) {
+							case 0:
+								CurrentLevel++;
+								SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+								break;
+							case -1:
+								break;
+							case -2:
+								break;
+							default:
+								throw new NotImplementedException();
+						}
 					}
 					else {
 						_ops[_currentOp--].Undo();
@@ -78,6 +87,29 @@ namespace Coconut.Ewys {
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// Judges.
+		/// </summary>
+		/// <returns>
+		/// The result of the judgement.
+		/// <list type="bullet">
+		/// <item><term><c>0</c></term><description>Passed.</description></item>
+		/// <item><term><c>-1</c></term><description>Executed.</description></item>
+		/// <item><term><c>-2</c></term><description>Returned with insufficient treasure.</description></item>
+		/// </list>
+		/// </returns>
+		int Judge() {
+			foreach (var player in _players) {
+				if (!player.IsHome) return -1;
+			}
+			foreach (var entity in _entities) {
+				if (entity.Value is Treasure treasure) {
+					if (!treasure.IsPickedUp) return -2;
+				}
+			}
+			return 0;
 		}
 
 		void OnEntityPositionUpdate(object sender, PositionUpdateEventArgs e) {
