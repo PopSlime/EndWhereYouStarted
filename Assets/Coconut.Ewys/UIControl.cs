@@ -30,25 +30,25 @@ namespace Coconut.Ewys {
 			Instance = this;
 			switch (LevelController.CurrentLevel) {
 				case 0:
-					SetExplainText("有点透明的星星只有晚上才会出现\n要把所有的星星都拿到才行哦");
+					SetExplainText("按<color=#00cc00>方向键</color>移动\n透明的<color=#0088ff>星星</color>只有晚上才能捡到，要把所有星星拿到才行哦");
 					break;
 				case 1:
-					SetExplainText("碰到障碍物和边界的话，就会动不了");
+					SetExplainText("移动时不能越过<color=#0088ff>障碍物</color>和<color=#0088ff>边界</color>");
 					break;
 				case 2:
-					SetExplainText("把箱子推到魔法阵上就能打开宝箱\n宝箱里也有星星哦");
+					SetExplainText("把<color=#0088ff>箱子</color>推到<color=#0088ff>魔法阵</color>上就能打开<color=#0088ff>宝箱</color>\n宝箱里也有星星哦");
 					break;
 				case 3:
-					SetExplainText("进了虫洞就会被传送到另一端");
+					SetExplainText("进了<color=#0088ff>虫洞</color>就会被传送到另一端\n必须在<color=#ff0000>日落</color>前返回营地哦");
 					break;
 				case 4:
-					SetExplainText("按下 Tab 键就可以切换人哦\n注意合理分配步数");
+					SetExplainText("按下 <color=#00cc00>Tab 键</color>可以切换操作的人物");
 					break;
 				case 5:
 					SetExplainText("有的箱子到了夜晚也会继续存在");
 					break;
 				case 12:
-					SetExplainText("恭喜你,通过了demo的所有关卡");
+					SetExplainText("<color=#ff8800>恭喜你，通过了 demo 的所有关卡</color>");
 					m_stepNumberText.gameObject.SetActive(false);
 					return;
 				default:
