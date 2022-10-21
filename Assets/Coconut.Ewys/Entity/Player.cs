@@ -21,5 +21,7 @@ namespace Coconut.Ewys.Entity {
 			base.OnStartMove(delta, teleport);
 			if (!teleport && delta.x != 0) Renderer.flipX = delta.x > 0;
 		}
+
+		protected override int ZIndex => 10;
 	}
 }

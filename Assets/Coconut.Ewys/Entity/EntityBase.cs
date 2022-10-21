@@ -69,6 +69,7 @@ namespace Coconut.Ewys.Entity {
 		protected bool IsOnActiveSide { get; private set; }
 		public virtual bool IsActive => IsOnActiveSide;
 		public virtual bool IsVisible => true;
+		protected virtual int ZIndex => IsOnActiveSide ? 1 : 0;
 		public virtual void OnPhaseUpdate(Side side, bool doTransition = true) {
 			IsOnActiveSide = _side.HasFlag(side);
 			UpdateState();
@@ -80,6 +81,7 @@ namespace Coconut.Ewys.Entity {
 				_side.HasFlag(Side.Lunar) ? 1 : 0.4f,
 				IsActive ? 1 : 0.5f
 			);
+			Renderer.sortingOrder = ZIndex;
 			Renderer.enabled = IsVisible;
 		}
 
