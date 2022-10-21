@@ -19,6 +19,7 @@ namespace Coconut.Ewys.Entity {
 
 		public bool IsPickedUp { get; private set; }
 		public void TryPickUp() {
+			if ((State & 0x2) != 0 && (State & 0x1) == 0) return;
 			IsPickedUp = true;
 			OnSetState();
 		}
