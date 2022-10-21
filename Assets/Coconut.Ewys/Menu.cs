@@ -12,10 +12,10 @@ namespace Coconut.Ewys {
 
 		[SerializeField]
 		GameObject m_levelButtonPrefab;
-		static int levelSum = 12;
+
 		void Start() {
-			//Automatic layout of level selection button
-			//for (int i = 0; i < 4; i++) {
+			LevelController.LoadIndex();
+			for (int i = 0; i < LevelController.LevelCount - 1; i++) {
 			//	for (int j = 0; j < 4; j++) {
 			//		var b = Instantiate(m_levelButtonPrefab);
 			//		b.transform.parent = m_levelMenu.transform;
@@ -24,7 +24,6 @@ namespace Coconut.Ewys {
 			//		b.GetComponent<Button>().onClick.AddListener(() => LoadLevel(i * 4 + j + 1));
 			//	}
 			//}
-			for (int i = 0; i < levelSum; i++) {
 				var b = Instantiate(m_levelButtonPrefab);
 				var t = b.transform .GetChild(0);
 				t.GetComponent<Text>().text = (i+1).ToString();

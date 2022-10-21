@@ -24,9 +24,13 @@ namespace Coconut.Ewys {
 
 		public int Step => _level.steps;
 
+		public static void LoadIndex() =>
+			_index ??= JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Levels/Index").text);
+		public static int LevelCount => _index.Count;
+
 		void Awake() {
 			Instance = this;
-			_index ??= JsonConvert.DeserializeObject<List<string>>(Resources.Load<TextAsset>("Levels/Index").text);
+			LoadIndex();
 			Read(_index[CurrentLevel]);
 
 			if (_env != null) {
