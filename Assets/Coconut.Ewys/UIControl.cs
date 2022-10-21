@@ -55,13 +55,11 @@ namespace Coconut.Ewys {
 					SetExplainText("加油吧，少年");
 					break;
 			}
-
 			m_stepNumberText.text = LevelController.Instance.Step.ToString(CultureInfo.InvariantCulture);
-
 		}
 
 		public void SetExplainText(string explainText) {
-			this.m_explainText.text = explainText;
+			m_explainText.text = explainText;
 			//LevelController.
 		}
 
