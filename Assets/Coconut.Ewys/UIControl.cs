@@ -47,6 +47,9 @@ namespace Coconut.Ewys {
 				case 5:
 					SetExplainText("有的箱子到了夜晚也会继续存在");
 					break;
+				case 11:
+					SetExplainText("End Where You Started");
+					break;
 				case 12:
 					SetExplainText("<color=#ff8800>恭喜你，通过了 demo 的所有关卡</color>");
 					m_stepNumberText.gameObject.SetActive(false);
